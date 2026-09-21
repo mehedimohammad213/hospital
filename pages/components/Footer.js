@@ -1,4 +1,4 @@
-import { cmsMediaUrl } from "@/lib/cms";
+import { cmsMediaUrl, unwrapCmsList } from "@/lib/cms";
 import * as React from "react";
 import { useContext, useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
@@ -17,14 +17,13 @@ function Footer({ footerData }) {
   const [navbarData, setNavbarData] = useState(null);
   
   const [menuItemsData, setMenuItemsData] = useState(null);
-console.log(menuItemsData,"menuItemsData");
   // Fetch navbar data for Bengali translations
   useEffect(() => {
     const fetchNavbarData = async () => {
       try {
         const navbarEndpoint = process.env.NEXT_PUBLIC_NAVBAR_ENDPOINT || "/navbars";
         const response = await instance.get(navbarEndpoint);
-        setNavbarData(response.data);
+        setNavbarData(unwrapCmsList(response.data));
       } catch (error) {
         console.error("Error fetching navbar data:", error);
       }
@@ -38,7 +37,7 @@ console.log(menuItemsData,"menuItemsData");
       try {
         const menuItemsEndpoint = process.env.NEXT_PUBLIC_MENUITEMS_ENDPOINT || "/menuitems";
         const response = await instance.get(menuItemsEndpoint);
-        setMenuItemsData(response.data);
+        setMenuItemsData(unwrapCmsList(response.data));
       } catch (error) {
         console.error("Error fetching menu items data:", error);
       }
@@ -79,11 +78,10 @@ console.log(menuItemsData,"menuItemsData");
     // Fallback to navbar data
     if (navbarData) {
       for (const navbar of navbarData) {
-        if (navbar.menu?.menu_items) {
-          for (const item of navbar.menu.menu_items) {
-            if (item.title.toLowerCase() === title.toLowerCase()) {
-              return item.title_bn || title;
-            }
+        const items = navbar.menu?.menu_items ?? navbar.menu_items ?? [];
+        for (const item of items) {
+          if (item.title?.toLowerCase() === title.toLowerCase()) {
+            return item.title_bn || title;
           }
         }
       }

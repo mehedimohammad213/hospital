@@ -5,7 +5,8 @@ import Footer from './Footer';
 import { Box, Container, IconButton, keyframes } from '@mui/material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import instance from '../api/api_instance';
-import { normalizeCmsData } from '@/lib/cms';
+import { normalizeCmsData, normalizeNavbar, unwrapCmsList } from '@/lib/cms';
+
 
 function Layout({ children }) {
   const [footerData, setFooterData] = useState(null);
@@ -17,7 +18,11 @@ function Layout({ children }) {
   const fetchFooterData = async () => {
     try {
       const listResponse = await instance.get("/pages?type=Footer");
-      const footerSummary = listResponse.data?.[0];
+      const footers = unwrapCmsList(listResponse.data);
+      // Prefer the newest footer when duplicates exist from re-seeds
+      const footerSummary = [...footers].sort(
+        (a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0)
+      )[0];
       if (!footerSummary?.id) return;
       const response = await instance.get(`/pages/${footerSummary.id}`);
       setFooterData(normalizeCmsData(response.data));
@@ -29,12 +34,13 @@ function Layout({ children }) {
   const fetchNavbarData = async () => {
     try {
       const response = await instance.get("/navbars");
-      const sajidaMainNavEn = response.data.find(navbar => navbar.title_en === "Sajida Main Nav") || response.data[0];
-      setNavbarData(sajidaMainNavEn);
-      const sajidaMainNavBn = response.data.find(navbar => navbar.title_en === "Sajida Main Nav Bangla");
-      setNavbarDataBn(sajidaMainNavBn);
-      const buttonNavbar = response.data.find(navbar => navbar.title_en === "SajidaOne");
-      setButtonNavbarData(buttonNavbar);
+      const navbars = unwrapCmsList(response.data);
+      const sajidaMainNavEn = navbars.find(navbar => navbar.title_en === "Sajida Main Nav") || navbars[0];
+      setNavbarData(normalizeNavbar(sajidaMainNavEn));
+      const sajidaMainNavBn = navbars.find(navbar => navbar.title_en === "Sajida Main Nav Bangla");
+      setNavbarDataBn(normalizeNavbar(sajidaMainNavBn));
+      const buttonNavbar = navbars.find(navbar => navbar.title_en === "SajidaOne");
+      setButtonNavbarData(normalizeNavbar(buttonNavbar));
     } catch (error) {
       console.error("Error fetching navbar data:", error);
     }
