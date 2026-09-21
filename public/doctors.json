@@ -1,0 +1,517 @@
+[
+  {
+    "department": "Gynae & OBS",
+    "image":"/assets/gynae.png",
+    "doctors": [
+      {
+        "department": "Gynae & OBS",
+
+        "slug": "prof-dr-kishwar-sultana",
+        "qualifications": [
+          "MBBS",
+          "DGO",
+          "FCPS",
+          "MCPS"
+        ],
+        "designation": "Professor Obs/Gyne",
+        "hospital": "Holy Family Red Crescent Medical College & Hospital, Dhaka",
+        "schedule": [
+          {
+            "day": "Wednesday",
+            "time": "3pm-6pm"
+          }
+        ]
+      },
+      {
+        "department": "Gynae & OBS",
+     
+        "slug": "dr-kaberi-salam",
+        "qualifications": [
+          "MBBS",
+          "DGO",
+          "MSS"
+        ],
+        "designation": "Senior Consultant",
+        "hospital": null,
+        "schedule": [
+          {
+            "day": "Sunday to Thursday",
+            "time": "10am-5pm"
+          }
+        ]
+      },
+      {
+        "department": "Gynae & OBS",
+        "name": "Dr. Saria Nafia",
+        "slug": "dr-saria-nafia",
+        "qualifications": [
+          "MBBS",
+          "FCPS"
+        ],
+        "designation": "Assistant Professor",
+        "hospital": "Monno Medical College Hospital",
+        "schedule": [
+          {
+            "day": "Saturday",
+            "time": "10am-4pm"
+          },
+          {
+            "day": "Thursday and Friday",
+            "time": "5pm-8pm"
+          }
+        ]
+      },
+      {
+        "department": "Gynae & OBS",
+        "name": "Dr. Dipika Khanom",
+        "slug": "dr-dipika-khanom",
+        "qualifications": [
+          "MBBS",
+          "PGT",
+          "CCD(BIRDEM)"
+        ],
+        "designation": "Residential Surgeon",
+        "hospital": null,
+        "schedule": [
+          {
+            "day": "Sunday to Friday",
+            "time": "8am-2:30pm"
+          }
+        ]
+      },
+      {
+        "department": "Gynae & OBS",
+        "name": "Dr. Afroza Begum",
+        "slug": "dr-afroza-begum",
+        "qualifications": [
+          "MBBS",
+          "FCPS"
+        ],
+        "designation": "Senior Consultant",
+        "hospital": "Dhaka Medical College Hospital",
+        "schedule": [
+          {
+            "day": "Monday",
+            "time": "4pm-6pm"
+          },
+          {
+            "day": "Tuesday",
+            "time": "11am-2pm"
+          }
+        ]
+      },
+      {
+        "department": "Gynae & OBS",
+        "name": "Dr. Kazi Sonia Munir",
+        "slug": "dr-kazi-sonia-munir",
+        "qualifications": [
+          "MBBS",
+          "DGO",
+          "MCPS"
+        ],
+        "designation": "Specially trained in the treatment of infertile couples",
+        "hospital": null,
+        "schedule": [
+          {
+            "day": "Friday",
+            "time": "10am-6pm"
+          },
+          {
+            "day": "Saturday and Wednesday",
+            "time": "9am-9pm"
+          },
+          {
+            "day": "Sunday, Tuesday and Thursday",
+            "time": "3pm-9pm"
+          }
+        ]
+      },
+      {
+        "department": "Gynae & OBS",
+        "name": "Dr. Shirin Hossain",
+        "slug": "dr-shirin-hossain",
+        "qualifications": [
+          "MBBS",
+          "FCPS"
+        ],
+        "designation": "Obstetrician and Gynecologist Surgeon, Consultant",
+        "hospital": null,
+        "schedule": [
+          {
+            "day": "Sunday, Tuesday and Thursday",
+            "time": "10am-2pm"
+          },
+          {
+            "day": "Government holiday and Monday",
+            "time": "5pm-9pm"
+          }
+        ]
+      },
+      {
+        "department": "Gynae & OBS",
+        "name": "Dr. Shirina Akbar",
+        "slug": "dr-shirina-akbar",
+        "qualifications": [
+          "MBBS",
+          "DMEU"
+        ],
+        "designation": "Senior Consultant, Radiology and Imaging Department",
+        "hospital": null,
+        "schedule": []
+      }
+    ]
+  },
+  {
+    "department": "Pediatrics & NICU",
+     "image":"/assets/Pediatrics.png",
+    "doctors": [
+      {
+        "department": "Pediatrics & NICU",
+        "name": "Dr. Afsana Khanom",
+        "slug": "dr-afsana-khanom",
+        "qualifications": [
+          "MBBS",
+          "MD"
+        ],
+        "designation": "Senior Consultant",
+        "hospital": null,
+        "schedule": [
+          {
+            "day": "Saturday to Thursday",
+            "time": "9am-3pm"
+          }
+        ]
+      },
+      {
+        "department": "Pediatrics & NICU",
+        "name": "Dr. Abu Asma",
+        "slug": "dr-abu-asma",
+        "qualifications": [
+          "MBBS",
+          "DCH",
+          "FCPS"
+        ],
+        "designation": "Consultant",
+        "hospital": null,
+        "schedule": [
+          {
+            "day": "Saturday to Thursday",
+            "time": "3pm-9pm"
+          }
+        ]
+      },
+      {
+        "department": "Pediatrics & NICU",
+        "name": "Dr. Rokon ud Dowla",
+        "slug": "dr-rokon-ud-dowla",
+        "qualifications": [
+          "MBBS",
+          "BCS(Health)",
+          "MD(Child)"
+        ],
+        "designation": "Neonatal, Child and Adolescent Health Specialist, Consultant",
+        "hospital": "Sir Salimullah Medical College & Mitford Hospital",
+        "schedule": [
+          {
+            "day": "Saturday to Wednesday",
+            "time": "2:30pm-4:00pm"
+          }
+        ]
+      },
+      {
+        "department": "Pediatrics & NICU",
+        "name": "Dr. Shahrina Afroz Tisha",
+        "slug": "dr-shahrina-afroz-tisha",
+        "qualifications": [
+          "MBBS",
+          "MD"
+        ],
+        "designation": "Consultant",
+        "hospital": null,
+        "schedule": [
+          {
+            "day": "Friday and Government holiday",
+            "time": "9am-5pm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "department": "Medicine",
+    "image":"/assets/medicine.png",
+    "doctors": [
+      {
+        "department": "Medicine",
+        "name": "Dr. Mohammed Sarwar Nawaz",
+        "slug": "dr-mohammed-sarwar-nawaz",
+        "qualifications": [
+          "MBBS",
+          "MRCP(UK)",
+          "CCD"
+        ],
+        "designation": "Senior Consultant",
+        "hospital": null,
+        "schedule": [
+          {
+            "day": "Saturday to Thursday",
+            "time": "10am-5pm"
+          }
+        ]
+      },
+      {
+        "department": "Medicine",
+        "name": "Dr. Mohammad Mazharul Islam",
+        "slug": "dr-mohammad-mazharul-islam",
+        "qualifications": [
+          "MBBS",
+          "MRCP(UK)"
+        ],
+        "designation": "Consultant",
+        "hospital": "Sir Salimullah Medical College & Mitford Hospital",
+        "schedule": [
+          {
+            "day": "Saturday, Sunday, Monday, Wednesday and Thursday",
+            "time": "6pm-8pm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "department": "General Surgery",
+    "image":"/assets/generalSurgery.png",
+    "doctors": [
+      {
+        "department": "General Surgery",
+        "name": "Dr. Mitul Chakrobarty",
+        "slug": "dr-mitul-chakrobarty",
+        "qualifications": [
+          "MBBS",
+          "FCPS(Surgery)"
+        ],
+        "designation": "General and Laparoscopic Surgeon, Consultant",
+        "hospital": "Sir Salimullah Medical College & Mitford Hospital",
+        "schedule": [
+          {
+            "day": "Saturday, Sunday, Monday, Wednesday and Thursday",
+            "time": "6pm-7pm"
+          },
+          {
+            "day": "Friday",
+            "time": "On call"
+          }
+        ]
+      },
+      {
+        "department": "General Surgery",
+        "name": "Dr. Biplob C Bandha",
+        "slug": "dr-biplob-c-bandha",
+        "qualifications": [
+          "MBBS",
+          "FCPS(Surgery)"
+        ],
+        "designation": "General & Laparoscopic Surgeon Consultant",
+        "hospital": "Sir Salimullah Medical College & Mitford Hospital",
+        "schedule": [
+          {
+            "day": "Sunday, Tuesday and Thursday",
+            "time": "5pm-6pm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "department": "ENT",
+     "image":"/assets/ENT.png",
+    "doctors": [
+      {
+        "department": "ENT",
+        "name": "Dr. Utpaul Kumar Sarkar",
+        "slug": "dr-utpaul-kumar-sarkar",
+        "qualifications": [
+          "MBBS",
+          "FCPS(ENT)"
+        ],
+        "designation": "ENT and Head-Neck Specialist & Surgeon, Assistant Professor",
+        "hospital": "Sir Salimullah Medical College & Mitford Hospital",
+        "schedule": [
+          {
+            "day": "Saturday, Monday, Tuesday and Wednesday",
+            "time": "6pm-7pm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "department": "Nephrology",
+     "image":"/assets/Nephrology.png",
+    "doctors": [
+      {
+        "department": "Nephrology",
+        "name": "Dr. Nayan Ranjan Sarkar",
+        "slug": "dr-nayan-ranjan-sarkar",
+        "qualifications": [
+          "MBBS",
+          "MD (Kidney)",
+          "MACP (America)"
+        ],
+        "designation": "Kidney Disease, Pressure, Diabetes and Dialysis Specialist, Assistant Professor",
+        "hospital": "Sir Salimullah Medical College and Mitford Hospital",
+        "schedule": [
+          {
+            "day": "Sunday, Tuesday and Thursday",
+            "time": "7pm-8pm"
+          }
+        ]
+      },
+      {
+        "department": "Nephrology",
+        "name": "Dr. Sohel Bin Sayeed",
+        "slug": "dr-sohel-bin-sayeed",
+        "qualifications": [
+          "MBBS",
+          "CCD",
+          "MD (Nephrology)"
+        ],
+        "designation": "Assistant Professor",
+        "hospital": "Sir Salimullah Medical College and Mitford Hospital",
+        "schedule": [
+          {
+            "day": "Saturday, Monday and Wednesday",
+            "time": "3pm-4pm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "department": "Orthopaedic",
+     "image":"/assets/Orthopedics.png",
+    "doctors": [
+      {
+        "department": "Orthopaedic",
+        "name": "Dr. Obaidur Rahman",
+        "slug": "dr-obaidur-rahman",
+        "qualifications": [
+          "MBBS",
+          "MS (Orthopedic)"
+        ],
+        "designation": "Consultant",
+        "hospital": null,
+        "schedule": [
+          {
+            "day": "Sunday, Tuesday and Thursday",
+            "time": "7pm-8pm"
+          }
+        ]
+      },
+      {
+        "department": "Orthopaedic",
+        "name": "Dr. Zihan Morshed Khan",
+        "slug": "dr-zihan-morshed-khan",
+        "qualifications": [
+          "MBBS",
+          "D-Ortho"
+        ],
+        "designation": "Consultant",
+        "hospital": "Sir Salimullah Medical College and Mitford Hospital",
+        "schedule": [
+          {
+            "day": "Every Saturday",
+            "time": "3pm-5pm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "department": "Dermatology & Venereology",
+    "image":"/assets/Dermatology.png",
+    "doctors": [
+      {
+        "department": "Dermatology & Venereology",
+        "name": "Dr. Sadia Ahmed",
+        "slug": "dr-sadia-ahmed",
+        "qualifications": [
+          "MBBS",
+          "DDV"
+        ],
+        "designation": "Consultant",
+        "hospital": "Sir Salimullah Medical College and Mitford Hospital",
+        "schedule": [
+          {
+            "day": "Tuesday",
+            "time": "2pm-4pm"
+          }
+        ]
+      },
+      {
+        "department": "Dermatology & Venereology",
+        "name": "Dr. Rubaiya Nasrin Lopa",
+        "slug": "dr-rubaiya-nasrin-lopa",
+        "qualifications": [
+          "MBBS",
+          "DDV (BSMMU)"
+        ],
+        "designation": "Skin and Venereology Specialist",
+        "hospital": "PG Hospital, Dhaka",
+        "schedule": [
+          {
+            "day": "Friday",
+            "time": "10am-12pm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "department": "Cardiology",
+    "image":"/assets/cadorly.svg",
+    "doctors": [
+      {
+        "department": "Cardiology",
+        "name": "Dr. Ashraful Alam",
+        "slug": "dr-ashraful-alam",
+        "qualifications": [
+          "MBBS",
+          "D-Card (Cardiology)"
+        ],
+        "designation": "Trained in Interventional Cardiology (India), Consultant",
+        "hospital": "National Heart Institute and Hospital",
+        "schedule": [
+          {
+            "day": "Saturday, Monday and Thursday",
+            "time": "5pm-6pm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "department": "Food and Nutrition",
+    "image":"/assets/food.png",
+    "doctors": [
+      {
+        "department": "Food and Nutrition",
+        "name": "Dr. Ishrat Jahan",
+        "slug": "dr-ishrat-jahan",
+        "qualifications": [
+          "MSc",
+          "MPhil",
+          "PhD (Fellow)"
+        ],
+        "designation": "Nutritionist",
+        "hospital": null,
+        "schedule": [
+          {
+            "day": "Sunday, Tuesday and Thursday",
+            "time": "9am-3pm"
+          }
+        ]
+      }
+    ]
+  }
+]

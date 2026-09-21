@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Jost", sans-serif;
+
+}
+
+@font-face {
+  font-family: 'Light';
+  src: url('/assets/fonts/Jost-Light.ttf');
+}
+
+@font-face {
+  font-family: 'SemiBold';
+  src: url('/assets/fonts/Jost-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'ExterBold';
+  src: url('/assets/fonts/Jost-ExtraBold.ttf');
+}
+
+@font-face {
+  font-family: 'Regular';
+  src: url('/assets/fonts/Jost-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Medium';
+  src: url('/assets/fonts/Jost-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Jost-Bold';
+  src: url('/assets/fonts/Jost-Bold.ttf');
+}
+
+.exterBold {
+  font-family: 'ExterBold';
+  /* background-color:red; */
+}
+
+.SemiBold {
+  font-family: 'SemiBold';
+  /* background-color:red; */
+}
+
+.light {
+  font-family: 'Light';
+  /* background-color:red; */
+}
+
+.bold {
+   font-family: 'Jost-Bold', sans-serif;
+}
+
+.Regular {
+  font-family: 'Regular';
+}
+
+.Medium {
+  font-family: 'Medium';
+}
+
+/* Custom dot base style */
+ .custom-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #AAAAAA; /* Inactive color */
+    margin: 0 6px;
+    opacity: 1; /* Ensure it's visible */
+    transition: all 0.3s ease;
+    position: relative;
+    left: 30%;
+    top: 5px; /* Adjust as needed for vertical alignment */
+
+  }
+
+  .custom-dot.swiper-pagination-bullet-active {
+    background-color: #12A551; /* Active color */
+  }
+  .topic{
+    font-size: 18px;
+    font-weight: 500;
+    color: #2A6498;
+  }
+@media screen and (min-width: 900px) and (max-width: 1500px) {
+  .topic{
+    font-size: 14px;
+  }
+}

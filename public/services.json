@@ -1,0 +1,53 @@
+
+[
+  { 
+    "title": "Ambulance Service",
+    "description": "24-hour air-conditioned ambulance service available for patients.",
+    "fullDescription": "SAJIDA Hospital in Keraniganj has a 24-hour air-conditioned ambulance service available for patients. For this service, one can contact 01777-771418. Four ambulances, staffed by seven skilled drivers, are dedicated to providing services with free oxygen facilities.",
+    "serviceOverview": "AC Ambulance with free oxygen available at your emergencies 24/7.\n24 hour a day, 7 days a week within only Keraniganj area.\n4 ambulances and 7 trained drivers are always standby for emergencies.\nContact 01777-771418",
+    "button": "Learn More",
+    "slug": "ambulance-service",
+    "icon":"LocalHospitalOutlined",
+    "image":"/assets/ambulance.jpg"
+  },
+  {
+    "title": "Blood Bank",
+    "description": "First blood bank and transfusion services in Keraniganj Upazila.",
+    "fullDescription": "SAJIDA Hospital was the first to introduce blood bank and transfusion services in Keraniganj Upazila, located in the southwest of Dhaka city, in 2019. This service is provided under the supervision of a consultant in the Department of Transfusion Medicine. The selection of donors is carried out under the guidance of the blood transfusion consultant.\nBlood grouping, crossmatching, and donor screening tests are completed within 1 hour and 30 minutes. The medical technologist performs these tests, and the report is signed by the consultant before being provided to the patient.\nThe medical technologist collects the blood into designated bags, stores it in the prescribed refrigerator, and records the details in the logbook. Blood components, such as Whole Blood or RCC (manual), are stored in the designated refrigerator at 2–6°C for up to 28 days. The refrigerator temperature is checked daily, and the readings are recorded in a chart.\nIf a patient does not require blood and wishes to donate voluntarily, the hospital authorities utilize that blood for other patients in emergency situations. After the stipulated period, the unused blood is discarded.",
+    "serviceOverview": "Availability of Blood Bank and Transfusion Services with Expert Care.\nDonors are carefully selected under consultant supervision.\nBlood grouping, crossmatching, and screening tests are completed within 1 hour 30 minutes.\nBlood is stored safely.\nUnused blood is used to help other patients.\nAccess the safest, carefully stored blood when you need it the most at Keraniganj’s first blood bank.\nRapid matching and screening within 90 minutes for urgent cases.\nOversight by experienced Transfusion Medicine consultants.\nStrict safety with temperature-controlled storage, daily checks, and full traceability.\nCustomized care with access to whole blood or red cell units.\nCommunity-supported voluntary donations; expired units never issued",
+    "button": "Learn More",
+    "slug": "blood-bank",
+    "icon": "BloodtypeOutlined",
+    "image":"/assets/bloodbanks.jpg"
+  },
+  {
+    "title": "Dialysis Service",
+    "description": "Advanced hemodialysis services for patients with kidney disorders.",
+    "fullDescription": "The Dialysis Department at SAJIDA Hospital is a vital healthcare facility providing dialysis services to patients with kidney disorders. Equipped with advanced machinery and skilled personnel, the department ensures high-quality dialysis care. Hemodialysis services are available for patients suffering from kidney failure. The department is known for offering advanced dialysis treatment at affordable rates, with special support provided from the hospital’s fund for underprivileged patients.\nThe Dialysis Department at SAJIDA Hospital began operations on November 17, 2020. Currently, it is equipped with 11 hemodialysis machines: 7 for negative patients, 1 for B-virus positive patients, 3 for C-virus positive patients, and 2 ICU beds for initial or critical care.\nDialysis services are provided in three shifts. The first shift starts at 7:00 AM, the second at 11:00 AM, and the third at 4:00 PM. In emergencies requiring dialysis at night, the department strives to provide immediate care.\nThe Dialysis Department of SAJIDA Hospital is staffed with experienced doctors, nurses, and technicians who supervise the dialysis procedures and provide necessary care to patients. Additionally, two experienced Nephrologists provide overall medical consultation and supervision for the patients in this department.\nAll patients receiving dialysis undergo a screening test every six months, with 50% of the cost borne by the patient and 50% covered by the hospital authorities.\nMany patients receive dialysis services at SAJIDA Dialysis Department daily. Since its commencement, 434 patients have benefited from its services. By providing affordable, high-quality care, the department has made a significant contribution to the healthcare sector in the country. Increasing the number of machines, Hospital is moving forward with plans to provide 24-hour dialysis services in the near future.",
+    "serviceOverview": "Advanced Kidney Care, Expert Dialysis all at an Affordable Cost.\nProvides advanced and affordable kidney care.\nEquipped with 11 hemodialysis machines and ICU beds.\nOperates in three shifts with skilled staff and two nephrologists.\nScreening tests are done every six months.\nSo far, 434 patients have benefited from the services.\nReliable, affordable hemodialysis with expert oversight and at flexible hours at your fingertips.\nSkilled doctors, nurses, and technicians oversee each session with two nephrologists supervising treatment.\nSeparate machines for hepatitis B & C and ICU beds for new/unstable patients prevent infections.\nAffordable rates, hospital fund support for the underprivileged, and free semi-annual screenings (50% covered).\nThree daily shifts (7 AM, 11 AM, 4 PM) plus emergency night dialysis.\n11 machines in operation to reduce delays in getting service",
+    "button": "Learn More",
+    "slug": "dialysis-service",
+    "icon": "BiotechOutlined",
+    "image":"/assets/Dalyis-min.jpg"
+  },
+  {
+    "title": "Neonatal Intensive Care Unit (NICU)",
+    "description": "Specialized neonatal intensive care with 12 beds and observation ward.",
+    "fullDescription": "In response to the needs of patients in Keraniganj, the Neonatal Intensive Care Unit (NICU) was inaugurated at SAJIDA Hospital on December 10, 2015. It is currently operating with a total of 12 beds. Since its inception, the unit has served 5,053 patients. An Observation Ward was introduced on 7th November 2022, equipped with 4 beds to enhance patient monitoring and transitional care.\nThe medical team consists of 4 Medical Officers, supported by 15 nurses and 3 consultant doctors. Counseling sessions by consultants are conducted twice, ensuring both medical and emotional support for patients and families.\nTo maintain strict infection control, all equipment is sterilized every 7 days, and comprehensive NICU fumigation is carried out every 4 months, ensuring a safe and hygienic environment for neonatal care.",
+    "serviceOverview": "Advanced Neonatal Care with Our Expert NICU Team.\nWeekly equipment sterilization and four‑monthly fumigation keep the environment safe for fragile newborns.\n12 NICU beds plus a 4‑bed Observation Ward enable enhanced monitoring and step‑down care before discharge.\n3 consultants, 4 medical officers, and 15 nurses provide attentive, expert care at every stage.\n5,053 newborns cared for since 2015.\nTwo consultant‑led counseling sessions offer clear medical advice and emotional support.",
+    "button": "Learn More",
+    "slug": "nicu",
+    "icon": "ChildCareOutlined",
+    "image":"/assets/nicu-min.jpg"
+  },
+  {
+    "title": "NVD (Normal Vaginal Delivery)",
+    "description": "Comprehensive maternal care with skilled team for normal deliveries.",
+    "fullDescription": "Since 2005, SAJIDA Hospital began providing healthcare services in Keraniganj Upazila, an area now inhabited by over one million people. Over this long period, the hospital has established a prominent position in maternal and child healthcare in this region. For normal deliveries, a skilled team of 12 members currently works in three shifts.\nThey are supervised by three In-Charges and one Nursing Supervisor. A Residential Surgeon is available 24/7, directly involved with normal deliveries. Additionally, as per roster, two medical officers are assigned for monitoring purposes. To date, a total of 6,787 normal deliveries have been conducted at SAJIDA Hospital. The hospital also offers the facility for painless deliveries, which is managed by our consultant and expert team.",
+    "serviceOverview": "Safe & Skilled Normal Delivery with Our Expert Team.\nTrusted care since 2005, serving Keraniganj Upazila, now home to over one million people.\n12-member skilled team managing normal deliveries across three shifts.\n3 In-Charges, 1 Nursing Supervisor, a 24/7 Residential Surgeon, and 2 medical officers on roster.\nOver 6,700 normal deliveries successfully conducted.\nPainless delivery options available, managed by our consultant and expert team.\n24/7 patient-centered normal delivery care, including painless delivery options managed by experienced consultants.\nA 12-member team—including a resident surgeon on-site 24/7 and two medical officers—works in three shifts.\nThree in-charges and one nursing supervisor ensure protocols and safety throughout the delivery process.\nRecognized maternal and child healthcare in Keraniganj since 2005.",
+    "button": "Learn More",
+    "slug": "nvd-service",
+    "icon": "AccessibilityNewOutlined",
+    "image":"/assets/NVD.jpg"
+  }
+]
