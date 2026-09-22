@@ -1,13 +1,79 @@
 // Utility service to extract and process data from page API response
+import { cmsMediaUrl } from "@/lib/cms";
 
 const tableEmbed = (component) => component?._headless ?? component?._mave;
 
+const normalizeHeader = (header) =>
+  String(header || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "_");
+
+const HEADER_ALIASES = {
+  bodyPart: ["body_part", "bodypart"],
+  bodyPartBn: ["body_part_bn", "bodypart_bn"],
+  department: ["department", "department_name"],
+  departmentBn: ["department_bn", "department_name_bn"],
+  name: ["name"],
+  nameBn: ["name_bn"],
+  qualifications: ["qualifications", "qualification"],
+  qualificationsBn: ["qualifications_bn", "qualification_bn"],
+  designation: ["designation"],
+  designationBn: ["designation_bn"],
+  schedule: ["schedule"],
+  scheduleBn: ["schedule_bn"],
+  photo: ["photo_link", "photo", "image", "image_link"],
+  icon: ["icon_link", "icon"],
+};
+
+function buildHeaderIndex(headers = []) {
+  const index = {};
+  headers.forEach((header, i) => {
+    index[normalizeHeader(header)] = i;
+  });
+  return index;
+}
+
+function cellByAliases(row, headerIndex, aliases, fallbackIndex = -1) {
+  for (const alias of aliases) {
+    if (Object.prototype.hasOwnProperty.call(headerIndex, alias)) {
+      return row[headerIndex[alias]] ?? null;
+    }
+  }
+  if (fallbackIndex >= 0 && fallbackIndex < row.length) {
+    return row[fallbackIndex] ?? null;
+  }
+  return null;
+}
+
+function splitBodyParts(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) return value.map(String).map((s) => s.trim()).filter(Boolean);
+  return String(value)
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
+function resolveMediaUrl(value) {
+  if (!value) return null;
+  const raw = String(value).trim();
+  if (!raw) return null;
+  // Bengali/plain text accidentally read as a path is not a media URL
+  if (!/^https?:\/\//i.test(raw) && !raw.includes("/") && !/\.(png|jpe?g|webp|gif|svg)$/i.test(raw)) {
+    return null;
+  }
+  if (/^https?:\/\//i.test(raw)) return raw;
+  return cmsMediaUrl(raw);
+}
+
 // Helper function to create consistent slugs
 export const createSlug = (name) => {
-  return name.toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .replace(/-+/g, '-') // Replace multiple hyphens with single
+  return String(name || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
     .trim();
 };
 
@@ -20,18 +86,18 @@ export const createUniqueId = (name, index) => {
 // Helper function to get default Bengali translations for departments
 const getDefaultBengaliTranslation = (departmentName) => {
   const translations = {
-    "Ultrasonography": "আল্ট্রাসনোগ্রাফি",
+    Ultrasonography: "আল্ট্রাসনোগ্রাফি",
     "Food and nutrition specialist": "খাদ্য ও পুষ্টি বিশেষজ্ঞ",
     "Dermatology & Venereology": "চর্ম ও যৌনরোগ",
-    "Nephrology": "নেফ্রোলজি (কিডনি)",
-    "Cardiology": "কার্ডিওলজি (হৃদরোগ)",
-    "ENT": "ইএনটি (কান-নাক-গলা)",
+    Nephrology: "নেফ্রোলজি (কিডনি)",
+    Cardiology: "কার্ডিওলজি (হৃদরোগ)",
+    ENT: "ইএনটি (কান-নাক-গলা)",
     "Pediatrics & NICU": "শিশুরোগ ও এনআইসিইউ",
-    "Orthopaedic": "অর্থোপেডিক্স",
+    Orthopaedic: "অর্থোপেডিক্স",
     "Gynae & OBS": "গাইনি ও প্রসূতি",
-    "Anesthesia": "অ্যানেস্থেসিয়া",
+    Anesthesia: "অ্যানেস্থেসিয়া",
     "General Surgery": "সাধারণ সার্জারি",
-    "Medicine": "মেডিসিন"
+    Medicine: "মেডিসিন",
   };
 
   return translations[departmentName] || departmentName;
@@ -42,7 +108,7 @@ export const extractBodyPartsAndDepartments = (pageData) => {
     return {
       departments: [],
       doctors: [],
-      bodyParts: []
+      bodyParts: [],
     };
   }
 
@@ -50,129 +116,179 @@ export const extractBodyPartsAndDepartments = (pageData) => {
   let doctors = [];
   let bodyParts = [];
 
-  // Find the section with doctor data (Section 8)
-  const doctorSection = pageData.body.find(section =>
-    section.title === "Section 8" ||
-    section.data?.some(component => component.type === "table")
+  const doctorSection = pageData.body.find(
+    (section) =>
+      section.title === "Section 8" ||
+      section.data?.some((component) => component.type === "table")
   );
 
   if (doctorSection) {
-    // Extract departments from the first table
-    const departmentTable = doctorSection.data.find(component =>
-      component.type === "table" &&
-      tableEmbed(component)?.headers?.includes("department_name")
-    );
+    const departmentTable = doctorSection.data.find((component) => {
+      const headers = tableEmbed(component)?.headers || [];
+      const normalized = headers.map(normalizeHeader);
+      return (
+        component.type === "table" &&
+        normalized.some((h) => HEADER_ALIASES.department.includes(h)) &&
+        normalized.some((h) => HEADER_ALIASES.icon.includes(h))
+      );
+    });
 
     const departmentEmbed = tableEmbed(departmentTable);
     if (departmentTable && departmentEmbed?.rows) {
-      console.log('🏥 Processing Department Icons:');
-      departments = departmentEmbed.rows.map((row, index) => {
-        const deptName = row[0];
-        const iconUrl = row[1] || null;
-
-        // Debug department icons
-        console.log(`🏢 Department ${index + 1}: ${deptName}`);
-        console.log(`🖼️  Raw icon_link: ${row[1]}`);
-        console.log(`✅ Processed icon URL: ${iconUrl}`);
-        console.log(`🔗 Full icon URL: ${iconUrl ? iconUrl : 'No icon'}`);
-        console.log('---');
-
-        return {
-          name: deptName,
-          name_bn: row[2], // Bengali name from department_name_BN column
-          icon: iconUrl
-        };
-      });
-      console.log('📋 Final departments with icons:', departments);
+      const headerIndex = buildHeaderIndex(departmentEmbed.headers || []);
+      departments = departmentEmbed.rows
+        .map((row) => {
+          const deptName = cellByAliases(row, headerIndex, HEADER_ALIASES.department, 0);
+          const iconUrl = resolveMediaUrl(
+            cellByAliases(row, headerIndex, HEADER_ALIASES.icon, 1)
+          );
+          const nameBn = cellByAliases(row, headerIndex, HEADER_ALIASES.departmentBn, 2);
+          return {
+            name: deptName,
+            name_bn: nameBn || getDefaultBengaliTranslation(deptName),
+            icon: iconUrl,
+          };
+        })
+        .filter((dept) => dept.name);
     }
 
-    // Extract doctors from the second table
-    const doctorTable = doctorSection.data.find(component =>
-      component.type === "table" &&
-      tableEmbed(component)?.headers?.includes("Name")
-    );
+    const doctorTable = doctorSection.data.find((component) => {
+      const headers = tableEmbed(component)?.headers || [];
+      return (
+        component.type === "table" &&
+        headers.some((h) => normalizeHeader(h) === "name")
+      );
+    });
 
     const doctorEmbed = tableEmbed(doctorTable);
     if (doctorTable && doctorEmbed?.rows) {
-      doctors = doctorEmbed.rows.map((row, index) => {
-        const name = row[2];
-        const slug = createSlug(name);
-        const uniqueId = createUniqueId(name, index);
-        const imageUrl = row[6] || null;
+      const headerIndex = buildHeaderIndex(doctorEmbed.headers || []);
+      // Legacy column order when headers are missing/renamed:
+      // Body Part, Department, Name, Qualifications, Designation, Schedule, photo_link, ...
+      const legacy = {
+        bodyPart: 0,
+        department: 1,
+        name: 2,
+        qualifications: 3,
+        designation: 4,
+        schedule: 5,
+        photo: 6,
+        bodyPartBn: 7,
+        departmentBn: 8,
+        nameBn: 9,
+        qualificationsBn: 10,
+        designationBn: 11,
+        scheduleBn: 12,
+      };
 
-        // Debug photo URLs
-        console.log(`📸 Doctor ${index + 1}: ${name}`);
-        console.log(`🖼️  Raw photo_link: ${row[6]}`);
-        console.log(`✅ Processed image URL: ${imageUrl}`);
-        console.log(`🔗 Full image URL: ${imageUrl ? imageUrl : 'No image'}`);
-        console.log('---');
+      // Current API often omits Body Part and starts at Department
+      const currentNoBodyPart = !Object.keys(headerIndex).some((h) =>
+        HEADER_ALIASES.bodyPart.includes(h)
+      );
+      if (currentNoBodyPart && headerIndex.name === 1) {
+        legacy.department = 0;
+        legacy.name = 1;
+        legacy.qualifications = 2;
+        legacy.designation = 3;
+        legacy.schedule = 4;
+        legacy.photo = 5;
+        legacy.departmentBn = 6;
+        legacy.nameBn = 7;
+        legacy.qualificationsBn = 8;
+        legacy.designationBn = 9;
+        legacy.scheduleBn = 10;
+        legacy.bodyPart = -1;
+        legacy.bodyPartBn = -1;
+      }
 
-        return {
-          id: uniqueId, // Unique ID
-          originalId: index + 1,
-          name: name,
-          name_bn: row[9] || name, // Bengali name
-          slug: slug, // URL-friendly slug
-          department: row[1], // Department
-          department_bn: row[8] || row[1], // Bengali department
-          qualifications: row[3], // Qualifications
-          qualifications_bn: row[10] || row[3], // Bengali qualifications
-          designation: row[4], // Designation
-          designation_bn: row[11] || row[4], // Bengali designation
-          schedule: row[5], // Schedule
-          schedule_bn: row[12] || row[5], // Bengali schedule
-          image: imageUrl, // photo_link
-          bodyParts: row[0] ? row[0].split(', ').map(part => part.trim()) : [], // Body Part
-          bodyParts_bn: row[7] ? row[7].split(', ').map(part => part.trim()) : [] // Bengali Body Part
-        };
-      });
+      doctors = doctorEmbed.rows
+        .map((row, index) => {
+          const name = cellByAliases(row, headerIndex, HEADER_ALIASES.name, legacy.name);
+          if (!name) return null;
 
-      // Extract unique body parts
-      const allBodyParts = doctors.flatMap(doctor => doctor.bodyParts);
+          const slug = createSlug(String(name));
+          const uniqueId = createUniqueId(String(name), index);
+          const imageUrl = resolveMediaUrl(
+            cellByAliases(row, headerIndex, HEADER_ALIASES.photo, legacy.photo)
+          );
+          const department =
+            cellByAliases(row, headerIndex, HEADER_ALIASES.department, legacy.department) ||
+            "";
+          const departmentBn =
+            cellByAliases(row, headerIndex, HEADER_ALIASES.departmentBn, legacy.departmentBn) ||
+            getDefaultBengaliTranslation(department);
+
+          return {
+            id: uniqueId,
+            originalId: index + 1,
+            name,
+            name_bn:
+              cellByAliases(row, headerIndex, HEADER_ALIASES.nameBn, legacy.nameBn) || name,
+            slug,
+            department,
+            department_bn: departmentBn,
+            qualifications:
+              cellByAliases(
+                row,
+                headerIndex,
+                HEADER_ALIASES.qualifications,
+                legacy.qualifications
+              ) || "",
+            qualifications_bn:
+              cellByAliases(
+                row,
+                headerIndex,
+                HEADER_ALIASES.qualificationsBn,
+                legacy.qualificationsBn
+              ) || "",
+            designation:
+              cellByAliases(row, headerIndex, HEADER_ALIASES.designation, legacy.designation) ||
+              "",
+            designation_bn:
+              cellByAliases(
+                row,
+                headerIndex,
+                HEADER_ALIASES.designationBn,
+                legacy.designationBn
+              ) || "",
+            schedule:
+              cellByAliases(row, headerIndex, HEADER_ALIASES.schedule, legacy.schedule) || "",
+            schedule_bn:
+              cellByAliases(row, headerIndex, HEADER_ALIASES.scheduleBn, legacy.scheduleBn) ||
+              "",
+            image: imageUrl,
+            bodyParts: splitBodyParts(
+              cellByAliases(row, headerIndex, HEADER_ALIASES.bodyPart, legacy.bodyPart)
+            ),
+            bodyParts_bn: splitBodyParts(
+              cellByAliases(row, headerIndex, HEADER_ALIASES.bodyPartBn, legacy.bodyPartBn)
+            ),
+          };
+        })
+        .filter(Boolean);
+
+      const allBodyParts = doctors.flatMap((doctor) => doctor.bodyParts);
       bodyParts = [...new Set(allBodyParts)].filter(Boolean);
 
-      // Extract additional departments from doctor table that might not be in department table
-      const doctorDepartments = doctors.map(doctor => ({
+      const doctorDepartments = doctors.map((doctor) => ({
         name: doctor.department,
         name_bn: doctor.department_bn || getDefaultBengaliTranslation(doctor.department),
-        icon: null // No icon for doctor-extracted departments
+        icon: null,
       }));
 
-      // Merge departments from both sources, avoiding duplicates
-      const existingDeptNames = departments.map(d => d.name);
-      const additionalDepartments = doctorDepartments.filter(dept =>
-        !existingDeptNames.includes(dept.name)
+      const existingDeptNames = departments.map((d) => d.name);
+      const additionalDepartments = doctorDepartments.filter(
+        (dept) => dept.name && !existingDeptNames.includes(dept.name)
       );
 
-      // Combine all departments
       departments = [...departments, ...additionalDepartments];
     }
   }
 
-  // Final debug summary
-  console.log('🎯 FINAL PROCESSED DATA SUMMARY:');
-  console.log(`📊 Total Departments: ${departments.length}`);
-  console.log(`👨‍⚕️ Total Doctors: ${doctors.length}`);
-  console.log(`🔧 Total Body Parts: ${bodyParts.length}`);
-
-  // Debug sample data
-  if (departments.length > 0) {
-    console.log('🏥 Sample Department:', departments[0]);
-  }
-  if (doctors.length > 0) {
-    console.log('👨‍⚕️ Sample Doctor:', {
-      name: doctors[0].name,
-      department: doctors[0].department,
-      image: doctors[0].image
-    });
-  }
-
-  console.log('✅ Data extraction completed successfully!');
-
   return {
     departments,
     doctors,
-    bodyParts
+    bodyParts,
   };
 };
 
@@ -180,29 +296,31 @@ export const getDepartmentsByBodyPart = (doctors, bodyPart) => {
   if (!doctors || !bodyPart) return [];
 
   return doctors
-    .filter(doctor =>
-      doctor.bodyParts.some(part =>
-        part.toLowerCase().includes(bodyPart.toLowerCase()) ||
-        bodyPart.toLowerCase().includes(part.toLowerCase())
+    .filter((doctor) =>
+      doctor.bodyParts.some(
+        (part) =>
+          part.toLowerCase().includes(bodyPart.toLowerCase()) ||
+          bodyPart.toLowerCase().includes(part.toLowerCase())
       )
     )
-    .map(doctor => doctor.department)
-    .filter((dept, index, arr) => arr.indexOf(dept) === index); // Remove duplicates
+    .map((doctor) => doctor.department)
+    .filter((dept, index, arr) => arr.indexOf(dept) === index);
 };
 
 export const getDoctorsByDepartment = (doctors, department) => {
   if (!doctors || !department) return [];
 
-  return doctors.filter(doctor => doctor.department === department);
+  return doctors.filter((doctor) => doctor.department === department);
 };
 
 export const getDoctorsByBodyPart = (doctors, bodyPart) => {
   if (!doctors || !bodyPart) return [];
 
-  return doctors.filter(doctor =>
-    doctor.bodyParts.some(part =>
-      part.toLowerCase().includes(bodyPart.toLowerCase()) ||
-      bodyPart.toLowerCase().includes(part.toLowerCase())
+  return doctors.filter((doctor) =>
+    doctor.bodyParts.some(
+      (part) =>
+        part.toLowerCase().includes(bodyPart.toLowerCase()) ||
+        bodyPart.toLowerCase().includes(part.toLowerCase())
     )
   );
 };
@@ -210,15 +328,18 @@ export const getDoctorsByBodyPart = (doctors, bodyPart) => {
 export const getDoctorsByBodyPartAndDepartment = (doctors, bodyPart, department) => {
   if (!doctors) return [];
 
-  let filteredDoctors = doctors;
-
-  if (bodyPart) {
-    filteredDoctors = getDoctorsByBodyPart(filteredDoctors, bodyPart);
-  }
-
+  let filtered = doctors;
   if (department) {
-    filteredDoctors = getDoctorsByDepartment(filteredDoctors, department);
+    filtered = filtered.filter((doctor) => doctor.department === department);
   }
-
-  return filteredDoctors;
+  if (bodyPart) {
+    filtered = filtered.filter((doctor) =>
+      doctor.bodyParts.some(
+        (part) =>
+          part.toLowerCase().includes(bodyPart.toLowerCase()) ||
+          bodyPart.toLowerCase().includes(part.toLowerCase())
+      )
+    );
+  }
+  return filtered;
 };

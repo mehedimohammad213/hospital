@@ -17,13 +17,20 @@ function SpecialistCard({ cardImg, title, des, dig, btn, slug, path, department,
 
   // Function to truncate text to 6 words and add ellipsis
   const truncateText = (text, maxWords = 6) => {
-    if (!text) return '';
-    const words = text.split(' ');
+    if (text == null || text === "") return "";
+    const str = Array.isArray(text)
+      ? text.filter(Boolean).join(", ")
+      : String(text);
+    const words = str.split(/\s+/).filter(Boolean);
     if (words.length <= maxWords) {
-      return text;
+      return str;
     }
-    return words.slice(0, maxWords).join(' ') + '...';
+    return words.slice(0, maxWords).join(" ") + "...";
   };
+
+  const designationText = [des, Array.isArray(dig) ? dig.join(", ") : dig]
+    .filter(Boolean)
+    .join(", ");
 
   return (
     <>
@@ -31,7 +38,16 @@ function SpecialistCard({ cardImg, title, des, dig, btn, slug, path, department,
         sx={{ borderRadius: 3, width: "100%", border: "1px solid #EAF0F5", boxShadow: '0px 2px 4px rgba(18, 165, 81, 0.05)', }}
       >
         <Stack alignItems={"center"}>
-          <img src={cardImg} width={200} />
+          <img
+            src={cardImg || "/assets/images.png"}
+            width={200}
+            alt={typeof title === "string" ? title : "Doctor"}
+            onError={(e) => {
+              if (e.currentTarget.src.endsWith("/assets/images.png")) return;
+              e.currentTarget.src = "/assets/images.png";
+            }}
+            style={{ objectFit: "cover", maxHeight: 220 }}
+          />
         </Stack>
         <Box px={3} mt={3}>
           <Typography
@@ -55,7 +71,7 @@ function SpecialistCard({ cardImg, title, des, dig, btn, slug, path, department,
               whiteSpace: 'nowrap',
               mt: 1
             }}
-            dangerouslySetInnerHTML={{ __html: truncateText(des && dig ? `${des}, ${Array.isArray(dig) ? dig.join(", ") : dig}` : des || dig) || "" }}
+            dangerouslySetInnerHTML={{ __html: truncateText(designationText) || "" }}
           />
         </Box>
 

@@ -281,7 +281,18 @@ function specialistsPage() {
                 title={langu === 'bn' ? (item?.name_bn || item?.name) : item?.name}
                 cardImg={item?.image || "/assets/images.png"}
                 des={langu === 'bn' ? (item?.designation_bn || item?.designation) : item?.designation}
-                dig={langu === 'bn' ? (item?.qualifications_bn || item?.qualifications) : item?.qualifications}
+                dig={
+                  (() => {
+                    const q =
+                      langu === "bn"
+                        ? item?.qualifications_bn || item?.qualifications
+                        : item?.qualifications;
+                    const text = Array.isArray(q) ? q.join(", ") : q;
+                    // CMS often stores a long bio in Qualifications — keep cards to short credentials only
+                    if (!text || String(text).split(/\s+/).length > 12) return "";
+                    return q;
+                  })()
+                }
                 btn={langu === "en" ? "View Profile" : "প্রোফাইল দেখুন"}
                 slug={item?.slug || `doctor-${index}`}
                 path={item.path}

@@ -1,4 +1,4 @@
-import { cmsMediaUrl, normalizeCmsData } from "@/lib/cms";
+import { cmsMediaUrl, CMS_PAGES, normalizeCmsData, pagePath } from "@/lib/cms";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo, useState } from "react";
@@ -176,7 +176,7 @@ function storiesPage() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await instance.get("/pages/case-stories");
+      const response = await instance.get(pagePath(CMS_PAGES.caseStories));
       setData(normalizeCmsData(response.data?.body) || []);
     } catch (error) {
       console.error("Error fetching case stories:", error);

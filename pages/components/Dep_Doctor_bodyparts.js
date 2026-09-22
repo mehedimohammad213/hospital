@@ -215,12 +215,15 @@ function Dep_Doctor_bodyparts({ selectedBodyPart, selectedDepartments }) {
 
   // Function to truncate text to 6 words and add ellipsis
   const truncateText = (text, maxWords = 6) => {
-    if (!text) return '';
-    const words = text.split(' ');
+    if (text == null || text === "") return "";
+    const str = Array.isArray(text)
+      ? text.filter(Boolean).join(", ")
+      : String(text);
+    const words = str.split(/\s+/).filter(Boolean);
     if (words.length <= maxWords) {
-      return text;
+      return str;
     }
-    return words.slice(0, maxWords).join(' ') + '...';
+    return words.slice(0, maxWords).join(" ") + "...";
   };
 
   // Helper function to get department name based on language

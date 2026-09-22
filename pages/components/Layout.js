@@ -33,14 +33,60 @@ function Layout({ children }) {
 
   const fetchNavbarData = async () => {
     try {
-      const response = await instance.get("/navbars");
-      const navbars = unwrapCmsList(response.data);
-      const sajidaMainNavEn = navbars.find(navbar => navbar.title_en === "Sajida Main Nav") || navbars[0];
-      setNavbarData(normalizeNavbar(sajidaMainNavEn));
-      const sajidaMainNavBn = navbars.find(navbar => navbar.title_en === "Sajida Main Nav Bangla");
-      setNavbarDataBn(normalizeNavbar(sajidaMainNavBn));
-      const buttonNavbar = navbars.find(navbar => navbar.title_en === "SajidaOne");
-      setButtonNavbarData(normalizeNavbar(buttonNavbar));
+      const [navResponse, menuResponse] = await Promise.all([
+        instance.get("/navbars"),
+        instance.get("/menuitems").catch(() => ({ data: [] })),
+      ]);
+      const navbars = unwrapCmsList(navResponse.data);
+      const allMenuItems = unwrapCmsList(menuResponse.data);
+
+      const sajidaMainNavEn =
+        navbars.find((navbar) => navbar.title_en === "Sajida Main Nav") ||
+        navbars[0];
+      const sajidaMainNavBn = navbars.find(
+        (navbar) => navbar.title_en === "Sajida Main Nav Bangla"
+      );
+      const buttonNavbar = navbars.find(
+        (navbar) => navbar.title_en === "SajidaOne"
+      );
+
+      // Public /navbars often omits nested logo; hydrate from /media/:id
+      const logoIds = [
+        sajidaMainNavEn?.logo_id,
+        sajidaMainNavBn?.logo_id,
+        buttonNavbar?.logo_id,
+      ].filter(Boolean);
+      const uniqueLogoIds = [...new Set(logoIds.map(String))];
+      const logoEntries = await Promise.all(
+        uniqueLogoIds.map(async (id) => {
+          try {
+            const res = await instance.get(`/media/${id}`);
+            return [id, res.data];
+          } catch {
+            return [id, null];
+          }
+        })
+      );
+      const logosById = Object.fromEntries(logoEntries);
+
+      setNavbarData(
+        normalizeNavbar(sajidaMainNavEn, {
+          menuItems: allMenuItems,
+          logo: logosById[String(sajidaMainNavEn?.logo_id)] || null,
+        })
+      );
+      setNavbarDataBn(
+        normalizeNavbar(sajidaMainNavBn, {
+          menuItems: allMenuItems,
+          logo: logosById[String(sajidaMainNavBn?.logo_id)] || null,
+        })
+      );
+      setButtonNavbarData(
+        normalizeNavbar(buttonNavbar, {
+          menuItems: allMenuItems,
+          logo: logosById[String(buttonNavbar?.logo_id)] || null,
+        })
+      );
     } catch (error) {
       console.error("Error fetching navbar data:", error);
     }
