@@ -162,8 +162,7 @@ function extractStoriesContent(sections, langu) {
 
 function cardHrefSlug(linkUrl, index) {
   if (!linkUrl || typeof linkUrl !== "string") return `story-${index + 1}`;
-  const cleaned = linkUrl.replace(/^\//, "");
-  return cleaned || `story-${index + 1}`;
+  return linkUrl.trim() || `story-${index + 1}`;
 }
 
 function storiesPage() {

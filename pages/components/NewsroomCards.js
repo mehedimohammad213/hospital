@@ -1,10 +1,16 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import Link from "next/link";
 import { MyContext } from "@/utils/ContextApi";
+import { buildCmsCollectionHref } from "@/lib/cms";
 
-function NewsroomCards({ image, date, title, description, slug,path }) {
+function NewsroomCards({ image, date, title, description, slug, path }) {
   const { langu } = useContext(MyContext);
+  const href = useMemo(
+    () => buildCmsCollectionHref(path || "", slug),
+    [path, slug]
+  );
+
   return (
     <Paper
       elevation={1}
@@ -20,27 +26,31 @@ function NewsroomCards({ image, date, title, description, slug,path }) {
         justifyContent: "space-between",
       }}
     >
-      {/* Image */}
       <Box sx={{ width: "100%", position: "relative" }}>
         <img
           src={image}
-          alt={title}
+          alt={typeof title === "string" ? title.replace(/<[^>]+>/g, "") : "Story"}
           style={{
             width: "100%",
             height: 200,
             objectFit: "cover",
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
-            objectPosition: "top"
+            objectPosition: "top",
           }}
         />
       </Box>
 
-      {/* Content */}
       <Box px={2} py={2.5}>
-        <Typography sx={{ color: "#2A6498", fontSize: 12, fontWeight: 600 }} dangerouslySetInnerHTML={{ __html: date || "" }} />
+        <Typography
+          sx={{ color: "#2A6498", fontSize: 12, fontWeight: 600 }}
+          dangerouslySetInnerHTML={{ __html: date || "" }}
+        />
 
-        <Typography sx={{ fontWeight: 600, my: 1, fontSize: 18 }} dangerouslySetInnerHTML={{ __html: title || "" }} />
+        <Typography
+          sx={{ fontWeight: 600, my: 1, fontSize: 18 }}
+          dangerouslySetInnerHTML={{ __html: title || "" }}
+        />
 
         <Typography
           sx={{
@@ -55,23 +65,24 @@ function NewsroomCards({ image, date, title, description, slug,path }) {
           dangerouslySetInnerHTML={{ __html: description || "" }}
         />
 
-
         <Box mt={2}>
-          <Link href={`${path}/${slug}`} passHref legacyBehavior>
-            <Button
-              sx={{
-                p: 0,
-                textTransform: "none",
-                fontWeight: 600,
-                color: "#12A551",
-              }}
-              endIcon={
-                <span style={{ fontSize: "16px", marginLeft: 4 }}>→</span>
-              }
-            >
-              {langu === "en" ? "Learn More" : "আরো জানুন"}
-            </Button>
-          </Link>
+          {href ? (
+            <Link href={href} passHref legacyBehavior>
+              <Button
+                sx={{
+                  p: 0,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  color: "#12A551",
+                }}
+                endIcon={
+                  <span style={{ fontSize: "16px", marginLeft: 4 }}>→</span>
+                }
+              >
+                {langu === "en" ? "Learn More" : "আরো জানুন"}
+              </Button>
+            </Link>
+          ) : null}
         </Box>
       </Box>
     </Paper>

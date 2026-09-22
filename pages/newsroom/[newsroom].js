@@ -13,23 +13,50 @@ function newsroom() {
     ? query.stories.split("-").join(" ")
     : "Not Found";
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { langu } = useContext(MyContext);
   console.log(data, "siglepage")
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const response = await instance.get(`/pages/${query?.page_id}`);
-      setData(normalizeCmsData(response.data.body));
-      setLoading(false);
-    } catch (error) {
-      // console.error("Error fetching data:", error);
-    }
-  };
-
   useEffect(() => {
+    if (!router.isReady) return;
+
+    const fetchData = async () => {
+      const slug = Array.isArray(query.newsroom)
+        ? query.newsroom[0]
+        : query.newsroom;
+      const pageId = Array.isArray(query.page_id)
+        ? query.page_id[0]
+        : query.page_id;
+
+      if (!slug && !pageId) {
+        setData([]);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        let response = null;
+        if (slug) {
+          try {
+            response = await instance.get(`/pages/${encodeURIComponent(slug)}`);
+          } catch {
+            response = null;
+          }
+        }
+        if (!response && pageId) {
+          response = await instance.get(`/pages/${encodeURIComponent(pageId)}`);
+        }
+        setData(normalizeCmsData(response?.data?.body) || []);
+      } catch (error) {
+        console.error("Error fetching newsroom detail:", error);
+        setData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchData();
-  }, [query]);
+  }, [router.isReady, query.newsroom, query.page_id]);
   if (loading) {
     return (
       <Box
