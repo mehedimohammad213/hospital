@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
 import BloodtypeOutlinedIcon from "@mui/icons-material/BloodtypeOutlined";
 import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
@@ -8,53 +8,73 @@ import ChildCareOutlinedIcon from "@mui/icons-material/ChildCareOutlined";
 import AccessibilityNewOutlinedIcon from "@mui/icons-material/AccessibilityNewOutlined";
 import MedicationIcon from "@mui/icons-material/Medication";
 import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
-import HearingIcon from "@mui/icons-material/Hearing";
 import BiotechIcon from "@mui/icons-material/Biotech";
 import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural";
-import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
-import FastfoodIcon from '@mui/icons-material/Fastfood';
-import AccessibleForwardIcon from '@mui/icons-material/AccessibleForward';
-import HearingDisabledIcon from '@mui/icons-material/HearingDisabled';
-import MedicationLiquidIcon from '@mui/icons-material/MedicationLiquid';
-import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
-import SoapIcon from '@mui/icons-material/Soap';
-import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
-
+import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
+import AccessibleForwardIcon from "@mui/icons-material/AccessibleForward";
+import HearingDisabledIcon from "@mui/icons-material/HearingDisabled";
+import MedicationLiquidIcon from "@mui/icons-material/MedicationLiquid";
+import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import SoapIcon from "@mui/icons-material/Soap";
+import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
 
 import { MyContext } from "@/utils/ContextApi";
+
+/** Build /services/{slug}?… from CMS link_url like `/nicu?page_id=153&pageName=…`. */
+function buildServiceHref(linkUrl) {
+  if (!linkUrl || typeof linkUrl !== "string") return null;
+  const raw = linkUrl.trim();
+  if (!raw) return null;
+  if (raw.startsWith("/services/")) return raw;
+
+  try {
+    const url = new URL(raw, "http://local.invalid");
+    const slug = url.pathname.replace(/^\/+/, "").split("/").filter(Boolean)[0];
+    if (!slug) return null;
+    const qs = url.searchParams.toString();
+    return `/services/${encodeURIComponent(slug)}${qs ? `?${qs}` : ""}`;
+  } catch {
+    const cleaned = raw.replace(/^\//, "");
+    return cleaned ? `/services/${cleaned}` : null;
+  }
+}
 
 function ServiceCards({ iconItem, title, des, btn, slug, isNullLink, index = 0 }) {
   const { langu } = useContext(MyContext);
   const icons = {
-  LocalHospitalOutlinedIcon,
-  BloodtypeOutlinedIcon,
-  BiotechOutlinedIcon,
-  ChildCareOutlinedIcon,
-  AccessibilityNewOutlinedIcon,
-  MedicalServicesIcon,
-  MedicationIcon,
-  FactCheckOutlinedIcon,
-  MonitorHeartIcon,
-  SoapIcon,
-  BiotechIcon,
-  MedicationLiquidIcon,
-  HealthAndSafetyIcon,
-  HearingDisabledIcon,
-  AccessibleForwardIcon,
-  FaceRetouchingNaturalIcon,
-};
+    LocalHospitalOutlinedIcon,
+    BloodtypeOutlinedIcon,
+    BiotechOutlinedIcon,
+    ChildCareOutlinedIcon,
+    AccessibilityNewOutlinedIcon,
+    MedicalServicesIcon,
+    MedicationIcon,
+    FactCheckOutlinedIcon,
+    MonitorHeartIcon,
+    SoapIcon,
+    BiotechIcon,
+    MedicationLiquidIcon,
+    HealthAndSafetyIcon,
+    HearingDisabledIcon,
+    AccessibleForwardIcon,
+    FaceRetouchingNaturalIcon,
+  };
 
-const fallbackIcons = Object.values(icons);
+  const fallbackIcons = Object.values(icons);
 
-const cleanName = iconItem
-  ?.replace(/<[^>]+>/g, "")
-  .replace(/&[^;]+;/g, "")
-  .trim();
+  const cleanName = iconItem
+    ?.replace(/<[^>]+>/g, "")
+    .replace(/&[^;]+;/g, "")
+    .trim();
 
-console.log(cleanName);
+  const IconComponent =
+    icons[cleanName] || fallbackIcons[index % fallbackIcons.length];
 
-const IconComponent =
-  icons[cleanName] || fallbackIcons[index % fallbackIcons.length];
+  const href = useMemo(
+    () => (isNullLink ? null : buildServiceHref(slug)),
+    [isNullLink, slug]
+  );
+
   return (
     <Box
       sx={{
@@ -84,7 +104,6 @@ const IconComponent =
         },
       }}
     >
-      {/* Overlay */}
       <Box
         sx={{
           position: "absolute",
@@ -95,7 +114,6 @@ const IconComponent =
         }}
       />
 
-      {/* Content */}
       <Box
         sx={{
           position: "relative",
@@ -107,9 +125,7 @@ const IconComponent =
           p: "30px 32px",
         }}
       >
-        {/* Top content */}
         <Box>
-          {/* Icon */}
           <Box
             className="icon-box"
             sx={{
@@ -125,10 +141,8 @@ const IconComponent =
             }}
           >
             <IconComponent sx={{ color: "#ffffff", fontSize: 28 }} />
-
           </Box>
 
-          {/* Title */}
           <Typography
             variant="h3"
             className="card-title"
@@ -142,7 +156,6 @@ const IconComponent =
             dangerouslySetInnerHTML={{ __html: title || "" }}
           />
 
-          {/* Description */}
           <Typography
             variant="body1"
             className="card-text"
@@ -158,31 +171,27 @@ const IconComponent =
           />
         </Box>
 
-        {/* Learn More Button — fixed bottom */}
         <Box sx={{ mt: "auto" }}>
-          {isNullLink ? null : <Link
-            href={`/services/${slug}`}
-            passHref
-            style={{ textDecoration: "none" }}
-          >
-            <Button
-              className="learn-more-btn"
-              sx={{
-                p: 0,
-                textTransform: "none",
-                fontWeight: 600,
-                fontSize: 16,
-                color: "#2A6498",
-                transition: "color 0.3s ease",
-              }}
-              endIcon={
-                <span style={{ fontSize: "16px", marginLeft: 4 }}>→</span>
-              }
-            >
-              <span dangerouslySetInnerHTML={{ __html: btn || "" }} />
-            </Button>
-          </Link>}
-
+          {href ? (
+            <Link href={href} passHref style={{ textDecoration: "none" }}>
+              <Button
+                className="learn-more-btn"
+                sx={{
+                  p: 0,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  fontSize: 16,
+                  color: "#2A6498",
+                  transition: "color 0.3s ease",
+                }}
+                endIcon={
+                  <span style={{ fontSize: "16px", marginLeft: 4 }}>→</span>
+                }
+              >
+                <span dangerouslySetInnerHTML={{ __html: btn || "" }} />
+              </Button>
+            </Link>
+          ) : null}
         </Box>
       </Box>
     </Box>
